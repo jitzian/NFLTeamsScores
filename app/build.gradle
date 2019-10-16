@@ -19,6 +19,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    dataBinding {
+        enabled = true
+    }
 }
 
 dependencies {
@@ -75,6 +79,7 @@ dependencies {
     kapt "com.google.dagger:dagger-android-processor:${deps.daggerVersionLib}"
 }
 
+//RecyclerView
 dependencies {
     //RecyclerView and CardView
     //noinspection GradleDependency
@@ -90,4 +95,9 @@ dependencies {
     implementation "androidx.legacy:legacy-support-v4:${deps.androidXLegacySupportVersionLib}"
     implementation "com.google.android.material:material:${deps.androidMaterialVersionLib}"
 
+}
+
+//Extra libraries
+dependencies {
+    implementation 'com.nightonke:boommenu:2.1.1'
 }
