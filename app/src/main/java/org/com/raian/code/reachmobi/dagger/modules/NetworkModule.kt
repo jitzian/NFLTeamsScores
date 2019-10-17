@@ -12,9 +12,9 @@ class NetworkModule {
 
     @Provides
     @Reusable
-    fun providesRetrofit() = Retrofit.Builder()
-            .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl(GlobalConstants.nflBaseUrl)
-            .build()
+    fun providesRetrofit(): Retrofit = Retrofit.Builder()
+        .addConverterFactory(GsonConverterFactory.create())
+        .baseUrl(GlobalConstants.nflBaseUrl)
+        .build()
 
 }
