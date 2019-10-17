@@ -2,6 +2,7 @@ package org.com.raian.code.reachmobi.dagger.components
 
 import dagger.Component
 import org.com.raian.code.reachmobi.dagger.modules.NetworkModule
+import org.com.raian.code.reachmobi.ui.viewmodel.showTeams.ShowTeamsViewModel
 import javax.inject.Singleton
 
 @Singleton
@@ -11,6 +12,8 @@ import javax.inject.Singleton
     ]
 )
 interface ComponentInjector {
+
+    fun inject(showTeamsViewModel: ShowTeamsViewModel)
 
     @Component.Builder
     interface Builder {
