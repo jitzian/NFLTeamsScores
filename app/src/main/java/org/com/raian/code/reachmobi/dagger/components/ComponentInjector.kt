@@ -2,7 +2,7 @@ package org.com.raian.code.reachmobi.dagger.components
 
 import dagger.Component
 import org.com.raian.code.reachmobi.dagger.modules.NetworkModule
-import org.com.raian.code.reachmobi.ui.viewmodel.showTeams.ShowTeamsViewModel
+import org.com.raian.code.reachmobi.ui.showTeams.viewmodel.ShowTeamsViewModel
 import javax.inject.Singleton
 
 @Singleton

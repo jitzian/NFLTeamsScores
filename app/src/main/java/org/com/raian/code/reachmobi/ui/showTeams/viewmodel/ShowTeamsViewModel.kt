@@ -1,4 +1,4 @@
-package org.com.raian.code.reachmobi.ui.viewmodel.showTeams
+package org.com.raian.code.reachmobi.ui.showTeams.viewmodel
 
 import dagger.Lazy
 import kotlinx.coroutines.*
@@ -26,6 +26,7 @@ class ShowTeamsViewModel : BaseViewModel(), CoroutineScope {
     @Inject
     lateinit var retrofit: Lazy<Retrofit>
 
+
     init {
         TAG = ShowTeamsViewModel::class.java.simpleName
         logger = Logger.getLogger(TAG)
@@ -45,7 +46,7 @@ class ShowTeamsViewModel : BaseViewModel(), CoroutineScope {
                 }
 
                 override fun onResponse(call: Call<ResultApi>, response: Response<ResultApi>) {
-                    logger.severe("$TAG::getResultsByTeam::onResponse::${response.body()}")
+                    logger.severe("$TAG::getResultsByTeam::onResponse::${response.body()?.data?.size}")
                 }
 
             })

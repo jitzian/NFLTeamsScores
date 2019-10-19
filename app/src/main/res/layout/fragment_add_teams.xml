@@ -1,0 +1,14 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="addTeamsFragment"
+            type="org.com.raian.code.reachmobi.ui.addTeams.fragments.AddTeamsFragment" />
+    </data>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/mRecyclerViewAddTeams"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent" />
+
+</layout>
