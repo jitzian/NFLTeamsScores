@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import org.com.raian.code.reachmobi.R
 import org.com.raian.code.reachmobi.databinding.FragmentShowTeamsBinding
+import org.com.raian.code.reachmobi.ui.addTeams.fragments.AddTeamsFragment
 import org.com.raian.code.reachmobi.ui.base.BaseFragment
 import java.util.logging.Logger
 
@@ -33,7 +34,13 @@ class ShowTeamsFragment : BaseFragment() {
         binding.showTeamsViewModel = showTeamsViewModel
 
         showTeamsViewModel.getResultsByTeam("DAL")
+    }
 
+    fun goToTeams(v: View){
+        logger.severe("$TAG::goToTeams::${v::class.java}")
+        fragmentManager?.beginTransaction()
+            ?.replace(R.id.mFrameLayoutAddTeamContainer, AddTeamsFragment(), AddTeamsFragment::class.java.simpleName)
+            ?.commit()
     }
 
 }

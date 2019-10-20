@@ -1,9 +1,11 @@
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable
-            name="addTeamsFragment"
+            name="fragment"
             type="org.com.raian.code.reachmobi.ui.addTeams.fragments.AddTeamsFragment" />
+        <variable
+            name="viewModel"
+            type="org.com.raian.code.reachmobi.ui.addTeams.viewmodel.AddTeamsViewModel" />
     </data>
 
     <androidx.recyclerview.widget.RecyclerView

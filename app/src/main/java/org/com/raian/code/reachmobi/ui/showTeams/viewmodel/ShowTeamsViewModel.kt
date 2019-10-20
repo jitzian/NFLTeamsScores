@@ -4,6 +4,8 @@ import dagger.Lazy
 import kotlinx.coroutines.*
 import org.com.raian.code.reachmobi.dagger.components.DaggerComponentInjector
 import org.com.raian.code.reachmobi.dagger.modules.NetworkModule
+import org.com.raian.code.reachmobi.dagger.modules.RepositoryModule
+import org.com.raian.code.reachmobi.model.repository.TeamsRepository
 import org.com.raian.code.reachmobi.rest.RestApi
 import org.com.raian.code.reachmobi.rest.model.ResultApi
 import org.com.raian.code.reachmobi.ui.base.BaseViewModel
@@ -21,11 +23,14 @@ class ShowTeamsViewModel : BaseViewModel(), CoroutineScope {
 
     private val injector = DaggerComponentInjector.builder()
         .networkModule(NetworkModule())
+        .repositoryModule(RepositoryModule())
         .build()
 
     @Inject
     lateinit var retrofit: Lazy<Retrofit>
 
+    @Inject
+    lateinit var repository: Lazy<TeamsRepository>
 
     init {
         TAG = ShowTeamsViewModel::class.java.simpleName

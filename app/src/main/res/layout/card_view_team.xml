@@ -1,73 +1,67 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.cardview.widget.CardView
+    <data>
+
+    </data>
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp">
-    </androidx.cardview.widget.CardView>
-</RelativeLayout>
+        android:layout_height="wrap_content">
 
-<!--<layout xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--    xmlns:tools="http://schemas.android.com/tools"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="wrap_content">-->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_8_dp"
+            android:elevation="@dimen/dimen_8_dp"
+            android:padding="@dimen/dimen_8_dp">
 
-<!--    <data>-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-<!--    </data>-->
+                <ImageView
+                    android:id="@+id/mImageViewTeamIcon"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_alignParentStart="true"
+                    android:src="@drawable/nfl_dallas_cowboys" />
 
-<!--    <androidx.cardview.widget.CardView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_margin="@dimen/dimen_8_dp"-->
-<!--        >-->
+                <TextView
+                    android:id="@+id/mTextViewTeamName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@+id/mImageViewTeamIcon"
+                    android:fontFamily="sans-serif-condensed-light"
+                    android:paddingStart="@dimen/dimen_20_dp"
+                    android:paddingEnd="@dimen/dimen_20_dp"
+                    android:textSize="20sp"
+                    tools:text="Cowboys" />
 
-<!--        <RelativeLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content">-->
-<!--            <ImageView-->
-<!--                android:id="@+id/mImageViewTeamIcon"-->
-<!--                android:layout_width="80dp"-->
-<!--                android:layout_height="80dp"-->
-<!--                android:layout_alignParentStart="true"-->
-<!--                android:src="@drawable/nfl_dallas_cowboys"/>-->
+                <CheckBox
+                    android:id="@+id/mCheckBoxTeamToShow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:checked="true" />
 
-<!--            <TextView-->
-<!--                android:id="@+id/mTextViewTeamName"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_toEndOf="@+id/mImageViewTeamIcon"-->
-<!--                android:layout_centerVertical="true"-->
-<!--                tools:text="Cowboys"-->
-<!--                android:fontFamily="sans-serif-condensed-light"-->
-<!--                android:textSize="30sp"/>-->
+                <!--            <CheckBox-->
+                <!--                android:id="@+id/checkb"-->
+                <!--                android:layout_width="115dp"-->
+                <!--                android:layout_height="50dp"-->
+                <!--                android:button="@drawable/custom_checkbox"-->
+                <!--                android:scaleX="3"-->
+                <!--                android:scaleY="3"-->
+                <!--                android:layout_centerVertical="true"-->
+                <!--                android:layout_alignParentRight="true"-->
+                <!--                android:layout_alignParentEnd="true"-->
+                <!--                android:layout_marginRight="15dp"-->
+                <!--                android:layout_marginEnd="15dp" />-->
 
-<!--            <CheckBox-->
-<!--                android:id="@+id/mCheckBoxTeamToShow"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_centerVertical="true"-->
-<!--                android:checked="true"-->
-<!--                android:layout_alignParentEnd="true"-->
-<!--                />-->
+            </RelativeLayout>
 
-<!--&lt;!&ndash;            <CheckBox&ndash;&gt;-->
-<!--&lt;!&ndash;                android:id="@+id/checkb"&ndash;&gt;-->
-<!--&lt;!&ndash;                android:layout_width="115dp"&ndash;&gt;-->
-<!--&lt;!&ndash;                android:layout_height="50dp"&ndash;&gt;-->
-<!--&lt;!&ndash;                android:button="@drawable/custom_checkbox"&ndash;&gt;-->
-<!--&lt;!&ndash;                android:scaleX="3"&ndash;&gt;-->
-<!--&lt;!&ndash;                android:scaleY="3"&ndash;&gt;-->
-<!--&lt;!&ndash;                android:layout_centerVertical="true"&ndash;&gt;-->
-<!--&lt;!&ndash;                android:layout_alignParentRight="true"&ndash;&gt;-->
-<!--&lt;!&ndash;                android:layout_alignParentEnd="true"&ndash;&gt;-->
-<!--&lt;!&ndash;                android:layout_marginRight="15dp"&ndash;&gt;-->
-<!--&lt;!&ndash;                android:layout_marginEnd="15dp" />&ndash;&gt;-->
-
-<!--        </RelativeLayout>-->
-
-<!--    </androidx.cardview.widget.CardView>-->
-<!--</layout>-->
+        </androidx.cardview.widget.CardView>
+    </RelativeLayout>
+</layout>
