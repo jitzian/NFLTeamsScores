@@ -12,6 +12,7 @@ class CustomApp : Application() {
 
     override fun onCreate() {
         super.onCreate().also {
+            instance = this
             inject()
         }
     }
