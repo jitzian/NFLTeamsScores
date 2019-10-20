@@ -24,4 +24,6 @@ interface TeamDao {
     @Query("SELECT * FROM team WHERE isSelected = :status ORDER BY teamName ASC")
     fun getAllByStatus(status: Boolean): LiveData<List<TeamDataClass>>
 
+    @Query("SELECT * FROM team WHERE teamName = :teamName")
+    fun getByTeamName(teamName: String): LiveData<TeamDataClass>
 }

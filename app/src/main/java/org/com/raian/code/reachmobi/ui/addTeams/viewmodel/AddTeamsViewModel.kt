@@ -32,7 +32,7 @@ class AddTeamsViewModel : BaseViewModel(), CoroutineScope {
         MutableLiveData<List<TeamDataClass>>()
     }
 
-    fun getListOfTeamsUI(): LiveData<List<TeamDataClass>>{
+    fun getListOfTeamsUI(): LiveData<List<TeamDataClass>> {
         return listOfTeams
     }
 
@@ -47,21 +47,26 @@ class AddTeamsViewModel : BaseViewModel(), CoroutineScope {
         injector.inject(this)
     }
 
-    private fun checkLocalData() = launch (Dispatchers.IO){
+    private fun checkLocalData() = launch(Dispatchers.IO) {
         val lstRes = repository.db.get().teamDao().getAll()
         logger.severe("$TAG::checkLocalData::${lstRes}")
 
-        if(lstRes.isNullOrEmpty()){
+        if (lstRes.isNullOrEmpty()) {
             logger.severe("$TAG::IS_EMPTY")
-            for (i in GlobalConstants.arrTeams){
+            for (i in GlobalConstants.arrTeams) {
                 val innerTeam = TeamDataClass(i, false, "$i.png")
                 repository.db.get().teamDao().insert(innerTeam)
             }
             listOfTeams.postValue(repository.db.get().teamDao().getAll())
-        }else{
+        } else {
             logger.severe("$TAG::IS_NOT_EMPTY")
             listOfTeams.postValue(lstRes)
         }
+    }
+
+    fun saveTeam(item: TeamDataClass) = launch(Dispatchers.IO) {
+        logger.severe("$TAG::saveTeam::$item")
+        repository.db.get().teamDao().update(item)
     }
 
 }

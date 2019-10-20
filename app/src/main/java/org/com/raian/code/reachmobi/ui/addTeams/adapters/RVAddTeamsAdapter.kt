@@ -5,11 +5,18 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import org.com.raian.code.reachmobi.databinding.CardViewTeamBinding
 import org.com.raian.code.reachmobi.model.database.model.TeamDataClass
+import org.com.raian.code.reachmobi.ui.addTeams.viewmodel.AddTeamsViewModel
 import org.com.raian.code.reachmobi.utility.getDrawableByName
+import java.util.logging.Logger
 
 class RVAddTeamsAdapter : RecyclerView.Adapter<RVAddTeamsAdapter.ViewHolder>() {
+    private val TAG = RVAddTeamsAdapter::class.java.simpleName
+    private val logger = Logger.getLogger(TAG)
 
     private var lstRes = ArrayList<TeamDataClass>()
+    private val addTeamsViewModel by lazy {
+        AddTeamsViewModel()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(CardViewTeamBinding.inflate(LayoutInflater.from(parent.context)))
@@ -28,7 +35,14 @@ class RVAddTeamsAdapter : RecyclerView.Adapter<RVAddTeamsAdapter.ViewHolder>() {
 
         fun bind(item: TeamDataClass) {
             binding.mTextViewTeamName.text = item.teamName
+
+            binding.mCheckBoxTeamToShow.setOnCheckedChangeListener(null)
             binding.mCheckBoxTeamToShow.isChecked = item.isSelected
+            binding.mCheckBoxTeamToShow.setOnCheckedChangeListener { _, isChecked ->
+                item.isSelected = isChecked
+                addTeamsViewModel.saveTeam(item)
+            }
+
             binding.mImageViewTeamIcon.setImageDrawable(getDrawableByName("${item.teamName}"))
         }
     }

@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -46,7 +45,6 @@ class AddTeamsFragment : DialogFragment(){
         layoutManager = LinearLayoutManager(context)
         binding.mRecyclerViewAddTeams.layoutManager = layoutManager
         binding.mRecyclerViewAddTeams.adapter = adapter
-
     }
 
     override fun onResume() {
@@ -60,6 +58,5 @@ class AddTeamsFragment : DialogFragment(){
             adapter.setTeams(it)
         })
     }
-
 
 }

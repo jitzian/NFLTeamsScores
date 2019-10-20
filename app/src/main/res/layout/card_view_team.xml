@@ -2,7 +2,12 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="addTeamsViewModel"
+            type="org.com.raian.code.reachmobi.ui.addTeams.viewmodel.AddTeamsViewModel" />
+        <variable
+            name="adapter"
+            type="org.com.raian.code.reachmobi.ui.addTeams.adapters.RVAddTeamsAdapter" />
     </data>
 
     <RelativeLayout
@@ -25,7 +30,7 @@
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_alignParentStart="true"
-                    android:src="@drawable/nfl_dallas_cowboys" />
+                    android:src="@drawable/nfl_dallas_cowboys"/>
 
                 <TextView
                     android:id="@+id/mTextViewTeamName"
@@ -45,7 +50,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:checked="true" />
+                    android:checked="true"
+                    android:onClick="@{(v)->adapter.saveTeam()}"/>
 
                 <!--            <CheckBox-->
                 <!--                android:id="@+id/checkb"-->

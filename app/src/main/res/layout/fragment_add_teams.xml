@@ -1,16 +1,42 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
+
     <data>
+
         <variable
             name="fragment"
             type="org.com.raian.code.reachmobi.ui.addTeams.fragments.AddTeamsFragment" />
+
         <variable
             name="viewModel"
             type="org.com.raian.code.reachmobi.ui.addTeams.viewmodel.AddTeamsViewModel" />
     </data>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/mRecyclerViewAddTeams"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/mButtonApply"
+            android:layout_marginBottom="@dimen/dimen_8_dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/mRecyclerViewAddTeams"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </FrameLayout>
+
+        <Button
+            android:id="@+id/mButtonApply"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="?android:attr/selectableItemBackground"
+            android:fontFamily="sans-serif-light"
+            android:onClick="@{()->fragment.dismiss()}"
+            android:text="Apply"
+            android:textAllCaps="false" />
+
+    </RelativeLayout>
 </layout>
