@@ -43,7 +43,7 @@ class RVAddTeamsAdapter : RecyclerView.Adapter<RVAddTeamsAdapter.ViewHolder>() {
                 addTeamsViewModel.saveTeam(item)
             }
 
-            binding.mImageViewTeamIcon.setImageDrawable(getDrawableByName("${item.teamName}"))
+            binding.mImageViewTeamIcon.setImageDrawable(getDrawableByName("${item.teamLogo}"))
         }
     }
 

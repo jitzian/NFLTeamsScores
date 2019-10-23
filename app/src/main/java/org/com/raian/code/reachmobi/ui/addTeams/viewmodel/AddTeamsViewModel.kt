@@ -49,23 +49,19 @@ class AddTeamsViewModel : BaseViewModel(), CoroutineScope {
 
     private fun checkLocalData() = launch(Dispatchers.IO) {
         val lstRes = repository.db.get().teamDao().getAll()
-        logger.severe("$TAG::checkLocalData::${lstRes}")
 
         if (lstRes.isNullOrEmpty()) {
-            logger.severe("$TAG::IS_EMPTY")
-            for (i in GlobalConstants.arrTeams) {
-                val innerTeam = TeamDataClass(i, false, "$i.png")
+            for((key, value) in GlobalConstants.mapOfTeams){
+                val innerTeam = TeamDataClass(key, false, value)
                 repository.db.get().teamDao().insert(innerTeam)
             }
             listOfTeams.postValue(repository.db.get().teamDao().getAll())
         } else {
-            logger.severe("$TAG::IS_NOT_EMPTY")
             listOfTeams.postValue(lstRes)
         }
     }
 
     fun saveTeam(item: TeamDataClass) = launch(Dispatchers.IO) {
-        logger.severe("$TAG::saveTeam::$item")
         repository.db.get().teamDao().update(item)
     }
 
