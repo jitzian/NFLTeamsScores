@@ -1,11 +1,11 @@
 package org.com.raian.code.reachmobi.dagger.components
 
 import dagger.Component
-import org.com.raian.code.reachmobi.dagger.modules.RepositoryModule
+import org.com.raian.code.reachmobi.dagger.modules.TeamsRepositoryModule
 import org.com.raian.code.reachmobi.ui.addTeams.viewmodel.AddTeamsViewModel
 
 @Component(
-    modules = [RepositoryModule::class]
+    modules = [TeamsRepositoryModule::class]
 )
 interface RepositoryInjector {
 
@@ -14,6 +14,6 @@ interface RepositoryInjector {
     @Component.Builder
     interface Builder{
         fun build(): RepositoryInjector
-        fun repositoryModule(repositoryModule: RepositoryModule): Builder
+        fun repositoryModule(teamsRepositoryModule: TeamsRepositoryModule): Builder
     }
 }

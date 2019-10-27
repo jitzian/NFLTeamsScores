@@ -6,7 +6,7 @@ import dagger.Reusable
 import org.com.raian.code.reachmobi.application.CustomApp
 
 @Module
-class AppModule(val app: CustomApp) {
+class AppModule(private val app: CustomApp) {
 
     @Provides
     @Reusable

@@ -6,13 +6,15 @@ import dagger.Lazy
 import kotlinx.coroutines.*
 import org.com.raian.code.reachmobi.dagger.components.DaggerComponentInjector
 import org.com.raian.code.reachmobi.dagger.modules.NetworkModule
-import org.com.raian.code.reachmobi.dagger.modules.RepositoryModule
+import org.com.raian.code.reachmobi.dagger.modules.TeamStatsRepositoryModule
+import org.com.raian.code.reachmobi.dagger.modules.TeamsRepositoryModule
 import org.com.raian.code.reachmobi.model.database.model.TeamDataClass
+import org.com.raian.code.reachmobi.model.database.model.TeamStatistics
+import org.com.raian.code.reachmobi.model.repository.TeamStatisticsRepository
 import org.com.raian.code.reachmobi.model.repository.TeamsRepository
 import org.com.raian.code.reachmobi.rest.RestApi
 import org.com.raian.code.reachmobi.rest.model.ResultApi
 import org.com.raian.code.reachmobi.ui.base.BaseViewModel
-import org.com.raian.code.reachmobi.utility.safeLet
 import retrofit2.Retrofit
 import java.util.logging.Logger
 import javax.inject.Inject
@@ -24,14 +26,18 @@ class ShowTeamsViewModel : BaseViewModel(), CoroutineScope {
 
     private val injector = DaggerComponentInjector.builder()
         .networkModule(NetworkModule())
-        .repositoryModule(RepositoryModule())
+        .teamRepositoryModule(TeamsRepositoryModule())
+        .teamStatisticsModule(TeamStatsRepositoryModule())
         .build()
 
     @Inject
     lateinit var retrofit: Lazy<Retrofit>
 
     @Inject
-    lateinit var repository: TeamsRepository
+    lateinit var teamsRepository: TeamsRepository
+
+    @Inject
+    lateinit var teamStatsRepository: TeamStatisticsRepository
 
     private val listOfTeams by lazy {
         MutableLiveData<List<TeamDataClass>>()
@@ -41,7 +47,23 @@ class ShowTeamsViewModel : BaseViewModel(), CoroutineScope {
         return listOfTeams
     }
 
+    private val listOfFetchedTeams by lazy {
+        MutableLiveData<List<ResultApi>>()
+    }
+
+    fun getListOfFetchedTeamsUI(): LiveData<List<ResultApi>> {
+        return listOfFetchedTeams
+    }
+
     private var listOfRemoteResults = ArrayList<ResultApi>()
+
+    private val listOfTeamStatistics by lazy {
+        MutableLiveData<List<TeamStatistics>>()
+    }
+
+    fun getListOfTeamStatistics(): LiveData<List<TeamStatistics>> {
+        return listOfTeamStatistics
+    }
 
     init {
         TAG = ShowTeamsViewModel::class.java.simpleName
@@ -55,70 +77,64 @@ class ShowTeamsViewModel : BaseViewModel(), CoroutineScope {
     }
 
     fun getSelectedTeamData() {
-        launch(Dispatchers.IO) {
-
-            getLocalData().let { listRes ->
-                listOfTeams.postValue(listRes)
-                for (i in listRes) {
-                    logger.severe("$TAG::$i")
-                    i.teamName?.let { item ->
-                        getRemoteData(item)
-                    }
+        launch {
+            val selectedTeams = getLocalData()
+            if (selectedTeams != null && selectedTeams.isNotEmpty()) {
+                teamStatsRepository.deleteAll()
+                for (item in selectedTeams) {
+                    logger.severe("$TAG::getSelectedTeamData::${item}")
+                    getRemoteData(item.teamName.toString())
+                    getAllStatisticsByTeamId(item.teamName.toString())
                 }
-                logger.severe("$TAG::AFTER-->> $listOfRemoteResults")
             }
         }
     }
 
-    private suspend fun getLocalData(): List<TeamDataClass> = coroutineScope {
-        return@coroutineScope repository.db.get().teamDao().getAllByStatus(true)
+    private suspend fun getLocalData(): List<TeamDataClass>? = coroutineScope {
+        return@coroutineScope teamsRepository.db.get().teamDao().getAllByStatus(true)
     }
-
 
     private suspend fun getRemoteData(team: String) = coroutineScope {
-        withContext(Dispatchers.Default) {
-            restApi.getResultsByTeam(team).execute().body()?.let {
-                listOfRemoteResults.add(it)
+        val deferredRemoteData = restApi.getResultsByTeam(team).execute()
+        logger.severe("$TAG::getRemoteData::${deferredRemoteData}")
+        deferredRemoteData.body()?.let { insertTeamStatistics(team, it) }
+    }
+
+    private suspend fun insertTeamStatistics(teamId: String, resultApi: ResultApi) =
+        coroutineScope {
+            resultApi.data.let { lstData ->
+                if (lstData != null) {
+                    if(teamStatsRepository.getAllByTeamId(teamId).isNullOrEmpty()){
+                        for (item in lstData) {
+                            val innerTeamStatistics = TeamStatistics(
+                                teamId,
+                                item.gid,
+                                item.seas,
+                                item.wk,
+                                item.day,
+                                item.v,
+                                item.h,
+                                item.stad,
+                                item.temp,
+                                item.humd,
+                                item.wspd,
+                                item.wdir,
+                                item.cond,
+                                item.surf,
+                                item.ou,
+                                item.sprv,
+                                item.ptsv,
+                                item.ptsh
+                            )
+                            teamStatsRepository.insert(innerTeamStatistics)
+                        }
+                    }
+                }
             }
         }
-    }
 
-    /**********************************************************************************************
-     * Brandon
-     * *******************************************************************************************/
-    fun getSelectedTeamStats() {
-        logger.severe("$TAG::getSelectedTeamStats")
-        launch(Dispatchers.IO) {
-            retrieveLocalData()
-            listOfTeams.value?.let {
-                fetchRemoteData(it)
-            }
-        }
-    }
-
-    private suspend fun retrieveLocalData() = coroutineScope {
-        val teams = repository.db.get().teamDao().getAllByStatus(true)
-        withContext(Dispatchers.Main) {
-            listOfTeams.value = teams
-        }
-    }
-
-    private suspend fun fetchRemoteData(teams: List<TeamDataClass>) = coroutineScope {
-        for (team in teams) {
-            val teamName = team.teamName ?: continue
-            fetchTeamRemoteData(teamName)
-        }
-    }
-
-    private fun CoroutineScope.fetchTeamRemoteData(teamName: String) = launch {
-        val teamData: ResultApi? = restApi.getResultsByTeam(teamName).execute().body()
-        logger.severe(
-            if (teamData == null) {
-                "Nothing came back for a team named $teamName"
-            } else {
-                "Team Data for team name $teamName $teamData"
-            }
-        )
+    private suspend fun getAllStatisticsByTeamId(teamId: String) = coroutineScope {
+        listOfTeamStatistics.postValue(teamStatsRepository.getAllByTeamId(teamId))
     }
 
     override fun onCleared() {
@@ -126,5 +142,4 @@ class ShowTeamsViewModel : BaseViewModel(), CoroutineScope {
             coroutineContext.cancel()
         }
     }
-
 }

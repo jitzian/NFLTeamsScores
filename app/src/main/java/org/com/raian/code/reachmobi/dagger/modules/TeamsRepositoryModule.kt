@@ -6,7 +6,7 @@ import dagger.Reusable
 import org.com.raian.code.reachmobi.model.repository.TeamsRepository
 
 @Module
-class RepositoryModule {
+class TeamsRepositoryModule {
     @Provides
     @Reusable
     fun providesRepository() = TeamsRepository()

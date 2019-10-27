@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.*
 import org.com.raian.code.reachmobi.constants.GlobalConstants
 import org.com.raian.code.reachmobi.dagger.components.DaggerRepositoryInjector
-import org.com.raian.code.reachmobi.dagger.modules.RepositoryModule
+import org.com.raian.code.reachmobi.dagger.modules.TeamsRepositoryModule
 import org.com.raian.code.reachmobi.model.database.model.TeamDataClass
 import org.com.raian.code.reachmobi.model.repository.TeamsRepository
 import org.com.raian.code.reachmobi.ui.base.BaseViewModel
@@ -22,7 +22,7 @@ class AddTeamsViewModel : BaseViewModel(), CoroutineScope {
         get() = Job()
 
     private val injector = DaggerRepositoryInjector.builder()
-        .repositoryModule(RepositoryModule())
+        .repositoryModule(TeamsRepositoryModule())
         .build()
 
     @Inject
@@ -48,21 +48,27 @@ class AddTeamsViewModel : BaseViewModel(), CoroutineScope {
     }
 
     private fun checkLocalData() = launch(Dispatchers.IO) {
-        val lstRes = repository.db.get().teamDao().getAll()
+        val lstRes = repository.getAll()
 
         if (lstRes.isNullOrEmpty()) {
             for((key, value) in GlobalConstants.mapOfTeams){
                 val innerTeam = TeamDataClass(key, false, value)
-                repository.db.get().teamDao().insert(innerTeam)
+                repository.insert(innerTeam)
             }
-            listOfTeams.postValue(repository.db.get().teamDao().getAll())
+            listOfTeams.postValue(repository.getAll())
         } else {
             listOfTeams.postValue(lstRes)
         }
     }
 
     fun saveTeam(item: TeamDataClass) = launch(Dispatchers.IO) {
-        repository.db.get().teamDao().update(item)
+        repository.update(item)
+    }
+
+    override fun onCleared() {
+        super.onCleared().also {
+            coroutineContext.cancel()
+        }
     }
 
 }
