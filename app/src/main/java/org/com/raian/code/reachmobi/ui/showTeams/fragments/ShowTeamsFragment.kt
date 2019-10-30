@@ -7,8 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.coroutines.runBlocking
-import org.com.raian.code.reachmobi.R
 import org.com.raian.code.reachmobi.databinding.FragmentShowTeamsBinding
 import org.com.raian.code.reachmobi.ui.addTeams.fragments.AddTeamsFragment
 import org.com.raian.code.reachmobi.ui.base.BaseFragment
@@ -33,13 +31,10 @@ class ShowTeamsFragment : BaseFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
         binding = FragmentShowTeamsBinding.inflate(inflater, container, false)
         initView()
         return rootView
     }
-
-
 
     override fun initView() {
         rootView = binding.root
@@ -47,25 +42,15 @@ class ShowTeamsFragment : BaseFragment() {
         binding.showTeamsFragment = this
         binding.showTeamsViewModel = showTeamsViewModel
 
-//        adapter = RVShowTeamsAdapter()
-//        layoutManager = LinearLayoutManager(context)
-//        binding.mRecyclerView.layoutManager = layoutManager
-//        binding.mRecyclerView.adapter = adapter
+        adapter = RVShowTeamsAdapter()
+        layoutManager = LinearLayoutManager(context)
+        binding.mRecyclerView.layoutManager = layoutManager
+        binding.mRecyclerView.adapter = adapter
     }
 
-//    override fun onResume() {
-//        logger.severe("$TAG::onResume")
-//        super.onResume().also {
-//            showTeamsViewModel.getSelectedTeamData()
-//        }
-//    }
-
-    override fun onStart() {
-        super.onStart().also {
-            showTeamsViewModel.getSelectedTeamData()
-//            runBlocking {
-//                showTeamsViewModel.getRemoteData("DAL")
-//            }
+    override fun onResume() {
+        super.onResume().also {
+            showTeamsViewModel?.getSelectedTeamData()
         }
     }
 
@@ -74,20 +59,9 @@ class ShowTeamsFragment : BaseFragment() {
     }
 
     private fun prepareObservers(){
-//        showTeamsViewModel.getListOfTeamsUI().observe(this, Observer {
-//            logger.severe("$TAG::${it}")
-//        })
-//        showTeamsViewModel.getListOfFetchedTeamsUI().observe(this, Observer { lst ->
-//            lst.let {
-//                adapter.setTeamStats(it)
-//            }
-//        })
-
-        showTeamsViewModel.getListOfTeamStatistics().observe(this, Observer { lst->
-            lst.let {
-                logger.severe("$TAG::${it}")
-            }
-        })
+        showTeamsViewModel?.listOfTeamStatisticsUI?.observeForever {
+            adapter.setTeamStats(it)
+        }
     }
 
 }

@@ -4,15 +4,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import org.com.raian.code.reachmobi.databinding.CardViewTeamStatsBinding
-import org.com.raian.code.reachmobi.model.database.model.TeamDataClass
-import org.com.raian.code.reachmobi.rest.model.ResultApi
+import org.com.raian.code.reachmobi.model.database.model.TeamStatistics
 import java.util.logging.Logger
 
 class RVShowTeamsAdapter: RecyclerView.Adapter<RVShowTeamsAdapter.ViewHolder>() {
     private val TAG = RVShowTeamsAdapter::class.java.simpleName
     private val logger = Logger.getLogger(TAG)
-//    private var lstRes = ArrayList<TeamDataClass>()
-    private var lstRes = ArrayList<ResultApi>()
+    private var lstRes = ArrayList<TeamStatistics>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(CardViewTeamStatsBinding.inflate(LayoutInflater.from(parent.context)))
@@ -29,17 +27,14 @@ class RVShowTeamsAdapter: RecyclerView.Adapter<RVShowTeamsAdapter.ViewHolder>() 
     }
 
     inner class ViewHolder(val binding: CardViewTeamStatsBinding): RecyclerView.ViewHolder(binding.root){
-//        fun bind(item: TeamDataClass){
-        fun bind(item: ResultApi){
-            binding.mTextViewStatsTeamName.text = item.data?.get(0)?.v
-
+        fun bind(item: TeamStatistics){
+            binding.mTextViewStatsTeamName.text = item.teamId
         }
     }
 
-//    fun setTeamStats(lstStats: List<TeamDataClass>){
-    fun setTeamStats(lstStats: List<ResultApi>){
-        lstRes = lstStats as ArrayList<ResultApi>
-
+    fun setTeamStats(lstStats: List<TeamStatistics>){
+        lstRes = lstStats as ArrayList<TeamStatistics>
+        notifyDataSetChanged()
     }
 
 }

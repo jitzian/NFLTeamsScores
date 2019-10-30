@@ -17,7 +17,7 @@ import kotlin.coroutines.CoroutineContext
  * Concurrency in Coroutines: https://proandroiddev.com/kotlin-coroutines-handling-concurrency-like-a-pro-retrofit2-coroutines-31cd0611fd91
  * */
 
-class AddTeamsViewModel : BaseViewModel(), CoroutineScope {
+class AddTeamsViewModel : BaseViewModel() {
     override val coroutineContext: CoroutineContext
         get() = Job()
 
@@ -51,7 +51,7 @@ class AddTeamsViewModel : BaseViewModel(), CoroutineScope {
         val lstRes = repository.getAll()
 
         if (lstRes.isNullOrEmpty()) {
-            for((key, value) in GlobalConstants.mapOfTeams){
+            for ((key, value) in GlobalConstants.mapOfTeams) {
                 val innerTeam = TeamDataClass(key, false, value)
                 repository.insert(innerTeam)
             }

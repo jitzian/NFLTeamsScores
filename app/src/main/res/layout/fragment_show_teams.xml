@@ -44,7 +44,7 @@
             android:layout_margin="16dp"
             android:src="@drawable/ic_add_white_24dp"
             app:fabSize="mini"
-            android:onClick="@{(v)->showTeamsFragment.goToTeams(v)}"/>
+            android:onClick="@{(v)->showTeamsFragment.goToTeams()}"/>
     </RelativeLayout>
 
 </layout>

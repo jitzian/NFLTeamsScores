@@ -15,12 +15,14 @@ import org.com.raian.code.reachmobi.model.repository.TeamsRepository
 import org.com.raian.code.reachmobi.rest.RestApi
 import org.com.raian.code.reachmobi.rest.model.ResultApi
 import org.com.raian.code.reachmobi.ui.base.BaseViewModel
+import org.com.raian.code.reachmobi.ui.model.TeamDataUI
+import org.com.raian.code.reachmobi.ui.model.TeamDetails
 import retrofit2.Retrofit
 import java.util.logging.Logger
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
-class ShowTeamsViewModel : BaseViewModel(), CoroutineScope {
+class ShowTeamsViewModel : BaseViewModel() {
     override val coroutineContext: CoroutineContext
         get() = Job()
 
@@ -39,31 +41,25 @@ class ShowTeamsViewModel : BaseViewModel(), CoroutineScope {
     @Inject
     lateinit var teamStatsRepository: TeamStatisticsRepository
 
-    private val listOfTeams by lazy {
-        MutableLiveData<List<TeamDataClass>>()
-    }
-
-    fun getListOfTeamsUI(): LiveData<List<TeamDataClass>> {
-        return listOfTeams
-    }
-
-    private val listOfFetchedTeams by lazy {
-        MutableLiveData<List<ResultApi>>()
-    }
-
-    fun getListOfFetchedTeamsUI(): LiveData<List<ResultApi>> {
-        return listOfFetchedTeams
-    }
-
-    private var listOfRemoteResults = ArrayList<ResultApi>()
+    private var listOfStatistics = ArrayList<TeamStatistics>()
 
     private val listOfTeamStatistics by lazy {
         MutableLiveData<List<TeamStatistics>>()
     }
 
-    fun getListOfTeamStatistics(): LiveData<List<TeamStatistics>> {
-        return listOfTeamStatistics
+    val listOfTeamStatisticsUI: LiveData<List<TeamStatistics>>
+        get() = listOfTeamStatistics
+
+
+    private var listOfTeamData = ArrayList<TeamDetails>()
+
+    /*********************************************************************************/
+    private val teamData by lazy {
+        MutableLiveData<TeamDataUI>()
     }
+    val teamDataUI: LiveData<TeamDataUI>
+        get() = teamData
+    /*********************************************************************************/
 
     init {
         TAG = ShowTeamsViewModel::class.java.simpleName
@@ -81,8 +77,9 @@ class ShowTeamsViewModel : BaseViewModel(), CoroutineScope {
             val selectedTeams = getLocalData()
             if (selectedTeams != null && selectedTeams.isNotEmpty()) {
                 teamStatsRepository.deleteAll()
+                listOfStatistics.clear()
+                listOfTeamData.clear()
                 for (item in selectedTeams) {
-                    logger.severe("$TAG::getSelectedTeamData::${item}")
                     getRemoteData(item.teamName.toString())
                     getAllStatisticsByTeamId(item.teamName.toString())
                 }
@@ -96,7 +93,6 @@ class ShowTeamsViewModel : BaseViewModel(), CoroutineScope {
 
     private suspend fun getRemoteData(team: String) = coroutineScope {
         val deferredRemoteData = restApi.getResultsByTeam(team).execute()
-        logger.severe("$TAG::getRemoteData::${deferredRemoteData}")
         deferredRemoteData.body()?.let { insertTeamStatistics(team, it) }
     }
 
@@ -104,7 +100,7 @@ class ShowTeamsViewModel : BaseViewModel(), CoroutineScope {
         coroutineScope {
             resultApi.data.let { lstData ->
                 if (lstData != null) {
-                    if(teamStatsRepository.getAllByTeamId(teamId).isNullOrEmpty()){
+                    if (teamStatsRepository.getAllByTeamId(teamId).isNullOrEmpty()) {
                         for (item in lstData) {
                             val innerTeamStatistics = TeamStatistics(
                                 teamId,
@@ -134,7 +130,16 @@ class ShowTeamsViewModel : BaseViewModel(), CoroutineScope {
         }
 
     private suspend fun getAllStatisticsByTeamId(teamId: String) = coroutineScope {
-        listOfTeamStatistics.postValue(teamStatsRepository.getAllByTeamId(teamId))
+        //TODO: Transform this data and prepare it for the UI
+        for (item in teamStatsRepository.getAllByTeamId(teamId)) {
+            listOfStatistics.add(item)
+        }
+        listOfTeamStatistics.postValue(listOfStatistics)
+    }
+
+    fun deleteById(teamName: String) = launch(Dispatchers.IO) {
+        teamsRepository.deleteById(teamName)
+        teamStatsRepository.deleteByTeamId(teamName)
     }
 
     override fun onCleared() {

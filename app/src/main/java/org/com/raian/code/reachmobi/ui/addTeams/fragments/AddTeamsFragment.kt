@@ -15,6 +15,7 @@ import org.com.raian.code.reachmobi.databinding.FragmentAddTeamsBinding
 import org.com.raian.code.reachmobi.ui.addTeams.adapters.RVAddTeamsAdapter
 import org.com.raian.code.reachmobi.ui.addTeams.viewmodel.AddTeamsViewModel
 import org.com.raian.code.reachmobi.ui.base.ViewModelFactory
+import org.com.raian.code.reachmobi.ui.base.viewmodel.getViewModel
 import org.com.raian.code.reachmobi.ui.showTeams.viewmodel.ShowTeamsViewModel
 import java.util.logging.Logger
 
@@ -28,13 +29,24 @@ class AddTeamsFragment : DialogFragment(){
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var adapter: RVAddTeamsAdapter
 
+//    private val addTeamsViewModel by lazy {
+//        ViewModelProviders.of(this, ViewModelFactory()).get(AddTeamsViewModel::class.java)
+//    }
+//
+//    private val showTeamsViewModel by lazy {
+//        ViewModelProviders.of(this, ViewModelFactory()).get(ShowTeamsViewModel::class.java)
+//    }
 
     private val addTeamsViewModel by lazy {
-        ViewModelProviders.of(this, ViewModelFactory()).get(AddTeamsViewModel::class.java)
+        getViewModel {
+            AddTeamsViewModel()
+        }
     }
 
     private val showTeamsViewModel by lazy {
-        ViewModelProviders.of(this, ViewModelFactory()).get(ShowTeamsViewModel::class.java)
+        getViewModel {
+            ShowTeamsViewModel()
+        }
     }
 
     override fun onAttach(context: Context) {
@@ -77,7 +89,7 @@ class AddTeamsFragment : DialogFragment(){
     }
 
     private fun initObservers() {
-        addTeamsViewModel.getListOfTeamsUI().observe(this, Observer {lst->
+        addTeamsViewModel?.getListOfTeamsUI()?.observe(this, Observer {lst->
             lst.let {
                 adapter.setTeams(it)
             }
@@ -86,7 +98,7 @@ class AddTeamsFragment : DialogFragment(){
 
     override fun dismiss() {
         super.dismiss().also {
-            showTeamsViewModel.getSelectedTeamData()
+            showTeamsViewModel?.getSelectedTeamData()
         }
     }
 
