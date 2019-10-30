@@ -18,7 +18,6 @@ interface TeamDao {
     @Query("SELECT * FROM team ORDER BY id ASC")
     fun getAll(): List<TeamDataClass>
 
-
     @Query("SELECT * FROM team WHERE isSelected = :status ORDER BY teamName ASC")
     fun getAllByStatus(status: Boolean): List<TeamDataClass>
 
@@ -27,4 +26,7 @@ interface TeamDao {
 
     @Query("DELETE FROM team")
     fun deleteAll()
+
+    @Query("DELETE FROM team WHERE teamName = :teamName")
+    fun deleteById(teamName: String)
 }

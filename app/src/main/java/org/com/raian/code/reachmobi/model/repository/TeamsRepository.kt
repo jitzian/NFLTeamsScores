@@ -45,6 +45,10 @@ class TeamsRepository : BaseRepository() {
         db.get().teamDao().deleteAll()
     }
 
+    fun deleteById(teamName: String){
+        db.get().teamDao().deleteById(teamName)
+    }
+
     override fun closeDB() {
         db.get().close()
     }
