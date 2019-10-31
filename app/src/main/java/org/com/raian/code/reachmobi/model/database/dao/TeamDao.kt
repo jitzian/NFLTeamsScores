@@ -22,6 +22,9 @@ interface TeamDao {
     fun getAllByStatus(status: Boolean): List<TeamDataClass>
 
     @Query("SELECT * FROM team WHERE teamName = :teamName")
+    fun getById(teamName: String): TeamDataClass
+
+    @Query("SELECT * FROM team WHERE teamName = :teamName")
     fun getByTeamName(teamName: String): TeamDataClass
 
     @Query("DELETE FROM team")

@@ -41,6 +41,8 @@ class TeamsRepository : BaseRepository() {
 
     fun getAllByStatus(status: Boolean) = db.get().teamDao().getAllByStatus(status)
 
+    fun getById(teamName: String): TeamDataClass = db.get().teamDao().getByTeamName(teamName)
+
     fun deleteAll(){
         db.get().teamDao().deleteAll()
     }

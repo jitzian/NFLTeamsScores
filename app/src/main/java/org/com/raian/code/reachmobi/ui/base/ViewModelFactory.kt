@@ -6,6 +6,7 @@ import org.com.raian.code.reachmobi.ui.addTeams.viewmodel.AddTeamsViewModel
 import org.com.raian.code.reachmobi.ui.showTeams.viewmodel.ShowTeamsViewModel
 import java.lang.IllegalStateException
 
+@Deprecated("IT GOT ENHANCED")
 @Suppress("UNCHECKED_CAST")
 class ViewModelFactory : ViewModelProvider.Factory{
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {

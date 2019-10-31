@@ -151,7 +151,7 @@
                             android:layout_width="90dp"
                             android:layout_height="wrap_content"
                             android:paddingEnd="16dp"
-                            android:text="Writ45ing:   "
+                            android:text="Writing:   "
                             android:textColor="#555"
                             tools:ignore="RtlSymmetry" />
 

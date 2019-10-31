@@ -7,8 +7,5 @@ data class TeamDetails(
     var dayOfWeek: String? = null,
     var visitingTeam: String? = null,
     var homeTeam: String? = null,
-    var stadiumName: String? = null,
-    var temperatureF: Int? = 0,
-    var humidity: Int? = 0,
-    var windSpeed: Int? = 0
+    var stadiumName: String? = null
 )

@@ -43,21 +43,16 @@ class ShowTeamsViewModel : BaseViewModel() {
 
     private var listOfStatistics = ArrayList<TeamStatistics>()
 
-    private val listOfTeamStatistics by lazy {
-        MutableLiveData<List<TeamStatistics>>()
-    }
-
-    val listOfTeamStatisticsUI: LiveData<List<TeamStatistics>>
-        get() = listOfTeamStatistics
-
-
     private var listOfTeamData = ArrayList<TeamDetails>()
 
     /*********************************************************************************/
+    private var listOfTeamDetails = ArrayList<TeamDetails>()
+    private var listOfTeamsData = ArrayList<TeamDataUI>()
+
     private val teamData by lazy {
-        MutableLiveData<TeamDataUI>()
+        MutableLiveData<List<TeamDataUI>>()
     }
-    val teamDataUI: LiveData<TeamDataUI>
+    val teamDataUI: LiveData<List<TeamDataUI>>
         get() = teamData
     /*********************************************************************************/
 
@@ -79,6 +74,8 @@ class ShowTeamsViewModel : BaseViewModel() {
                 teamStatsRepository.deleteAll()
                 listOfStatistics.clear()
                 listOfTeamData.clear()
+                listOfTeamsData.clear()
+                listOfTeamDetails.clear()
                 for (item in selectedTeams) {
                     getRemoteData(item.teamName.toString())
                     getAllStatisticsByTeamId(item.teamName.toString())
@@ -130,15 +127,27 @@ class ShowTeamsViewModel : BaseViewModel() {
         }
 
     private suspend fun getAllStatisticsByTeamId(teamId: String) = coroutineScope {
-        //TODO: Transform this data and prepare it for the UI
         for (item in teamStatsRepository.getAllByTeamId(teamId)) {
+            val innerTeamDetails = TeamDetails(
+                item.gid,
+                item.seas,
+                item.wk,
+                item.day,
+                item.v,
+                item.h,
+                item.stad
+            )
             listOfStatistics.add(item)
+            listOfTeamDetails.add(innerTeamDetails)
         }
-        listOfTeamStatistics.postValue(listOfStatistics)
+        listOfTeamsData.add(TeamDataUI(teamId, listOfTeamDetails))
+        teamData.postValue(listOfTeamsData)
     }
 
-    fun deleteById(teamName: String) = launch(Dispatchers.IO) {
-        teamsRepository.deleteById(teamName)
+    fun clearDataAndSelection(teamName: String) = launch(Dispatchers.IO) {
+        val team = teamsRepository.getById(teamName)
+        team.isSelected = false
+        teamsRepository.update(team)
         teamStatsRepository.deleteByTeamId(teamName)
     }
 
