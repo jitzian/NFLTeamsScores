@@ -9,10 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import org.com.raian.code.reachmobi.R
 import org.com.raian.code.reachmobi.utility.safeLet
 
-abstract class SwipeToDeleteCallback(context: Context?) :
+abstract class SwipeToDeleteCallback(context: Context) :
     ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
 
-    private val deleteIcon = context?.let { ContextCompat.getDrawable(it, R.drawable.ic_delete_white_24) }
+    private val deleteIcon = context.let { ContextCompat.getDrawable(it, R.drawable.ic_delete_white_24) }
     private val intrinsicWidth = deleteIcon?.intrinsicWidth
     private val intrinsicHeight = deleteIcon?.intrinsicHeight
     private val background = ColorDrawable()
