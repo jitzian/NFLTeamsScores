@@ -10,7 +10,7 @@ import org.com.raian.code.reachmobi.model.database.model.TeamStatistics
 import java.util.logging.Logger
 import javax.inject.Inject
 
-class TeamStatisticsRepository : BaseRepository(){
+class TeamStatisticsRepository : BaseRepository() {
 
     private val injector = DaggerDataBaseInjector.builder()
         .dataBaseModule(DataBaseModule(CustomApp.instance))
@@ -19,31 +19,31 @@ class TeamStatisticsRepository : BaseRepository(){
     @Inject
     lateinit var db: Lazy<TeamsDataBase>
 
-    init{
+    init {
         TAG = TeamStatisticsRepository::class.java.simpleName
         logger = Logger.getLogger(TAG)
         inject()
     }
 
-    private fun inject(){
+    private fun inject() {
         injector.inject(this)
     }
 
-    fun insert(teamStatistics: TeamStatistics){
+    fun insert(teamStatistics: TeamStatistics) {
         db.get().teamStatisticsDao().insert(teamStatistics)
     }
 
-    fun update(teamStatistics: TeamStatistics){
+    fun update(teamStatistics: TeamStatistics) {
         db.get().teamStatisticsDao().update(teamStatistics)
     }
 
     fun getAllByTeamId(teamId: String) = db.get().teamStatisticsDao().getAllByTeamId(teamId)
 
-    fun deleteAll(){
+    fun deleteAll() {
         db.get().teamStatisticsDao().deleteAll()
     }
 
-    fun deleteByTeamId(teamId: String){
+    fun deleteByTeamId(teamId: String) {
         db.get().teamStatisticsDao().deleteByTeamId(teamId)
     }
 

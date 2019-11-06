@@ -40,16 +40,14 @@ class AddTeamsViewModel : BaseViewModel() {
         TAG = AddTeamsViewModel::class.java.simpleName
         logger = Logger.getLogger(TAG)
         inject()
-        checkLocalData()
     }
 
     private fun inject() {
         injector.inject(this)
     }
 
-    private fun checkLocalData() = launch(Dispatchers.IO) {
+    fun checkLocalData() = launch(Dispatchers.IO) {
         val lstRes = repository.getAll()
-
         if (lstRes.isNullOrEmpty()) {
             for ((key, value) in GlobalConstants.mapOfTeams) {
                 val innerTeam = TeamDataClass(key, false, value)

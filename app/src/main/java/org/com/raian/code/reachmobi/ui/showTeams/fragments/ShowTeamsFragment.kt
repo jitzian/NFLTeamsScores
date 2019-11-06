@@ -69,14 +69,16 @@ class ShowTeamsFragment : BaseFragment() {
     }
 
     private fun setupSwiping() {
-        val swipeHandler = object : SwipeToDeleteCallback(context) {
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val adapter = binding.mRecyclerView.adapter as RVShowTeamsAdapter
-                adapter.removeAt(viewHolder.adapterPosition)
+        context?.let { ctx ->
+            val swipeHandler = object : SwipeToDeleteCallback(ctx) {
+                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                    val adapter = binding.mRecyclerView.adapter as RVShowTeamsAdapter
+                    adapter.removeAt(viewHolder.adapterPosition)
+                }
             }
+            val itemTouchHelper = ItemTouchHelper(swipeHandler)
+            itemTouchHelper.attachToRecyclerView(binding.mRecyclerView)
         }
-        val itemTouchHelper = ItemTouchHelper(swipeHandler)
-        itemTouchHelper.attachToRecyclerView(binding.mRecyclerView)
     }
 
 }

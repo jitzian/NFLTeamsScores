@@ -8,6 +8,7 @@
     <FrameLayout
         android:id="@+id/mFrameLayoutMainContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        android:background="@drawable/i_am_fried"/>
 
 </layout>

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.com.raian.code.reachmobi.databinding.FragmentAddTeamsBinding
@@ -39,7 +40,7 @@ class AddTeamsFragment : DialogFragment(){
 
     override fun onAttach(context: Context) {
         super.onAttach(context).also {
-            initObservers()
+            prepareObservers()
         }
     }
 
@@ -61,7 +62,13 @@ class AddTeamsFragment : DialogFragment(){
         binding.mRecyclerViewAddTeams.adapter = adapter
     }
 
-    private fun initObservers() {
+    override fun onResume() {
+        super.onResume().also {
+            addTeamsViewModel?.checkLocalData()
+        }
+    }
+
+    private fun prepareObservers() {
         addTeamsViewModel?.getListOfTeamsUI()?.observe(this, Observer {lst->
             lst.let {
                 adapter.setTeams(it)
