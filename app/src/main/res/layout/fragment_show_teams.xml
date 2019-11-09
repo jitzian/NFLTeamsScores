@@ -16,12 +16,19 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         tools:context="ShowTeamsFragment">
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true">
+
+        </androidx.appcompat.widget.SearchView>
 
         <FrameLayout
             android:id="@+id/mFrameLayoutAddTeamContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true" />
+            android:layout_below="@+id/searchV"/>
 
         <FrameLayout
             android:id="@+id/mFrameLayout"

@@ -2,6 +2,8 @@ package org.com.raian.code.reachmobi.ui.showTeams.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import org.com.raian.code.reachmobi.constants.GlobalConstants.Companion.mapOfCityImages
@@ -12,11 +14,12 @@ import java.util.*
 import java.util.logging.Logger
 import kotlin.collections.ArrayList
 
-class RVShowTeamsAdapter: RecyclerView.Adapter<RVShowTeamsAdapter.ViewHolder>() {
+class RVShowTeamsAdapter: RecyclerView.Adapter<RVShowTeamsAdapter.ViewHolder>(){
     private val TAG = RVShowTeamsAdapter::class.java.simpleName
     private val logger = Logger.getLogger(TAG)
     private var lstRes = ArrayList<TeamDataUI>()
     private var mapOfElements = WeakHashMap<String, TeamDataUI>()
+    private val searchableList = ArrayList<TeamDataUI>()
 
     private val showTeamsViewModel by lazy {
         ShowTeamsViewModel()
@@ -39,11 +42,12 @@ class RVShowTeamsAdapter: RecyclerView.Adapter<RVShowTeamsAdapter.ViewHolder>() 
     inner class ViewHolder(val binding: CardViewTeamStatsBinding): RecyclerView.ViewHolder(binding.root){
         fun bind(item: TeamDataUI){
             binding.mTextViewStatsTeamName.text = item.teamId
+            binding.mTextViewTeamStatsSeasonValue.text = item.teamData?.get(0)?.season.toString()
+            binding.mTextViewTeamStatsWeekValue.text = item.teamData?.get((0))?.weekNumber.toString()
+            binding.mTextViewTeamStatsStadiumValue.text = item.teamData?.get(0)?.stadiumName
             Picasso.get()
                 .load(mapOfCityImages[item.teamId])
                 .into(binding.mImageViewCity)
-
-            //TODO: Wire up data to be displayed in the UI
         }
     }
 
@@ -72,6 +76,13 @@ class RVShowTeamsAdapter: RecyclerView.Adapter<RVShowTeamsAdapter.ViewHolder>() 
         mapOfElements.values.forEach {
             lstRes.add(it)
         }
+    }
+
+    interface Searchable {
+        /** This method will allow to specify a search string to compare against
+        your search this can be anything depending on your use case.
+         */
+        fun getSearchCriteria(): String
     }
 }
 
